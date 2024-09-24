@@ -10,7 +10,7 @@ export class ProducerHttpController {
 
   @Post('chat')
   async createChat(@Body() body: CreateChat) {
-    await this.producerService.addToQueue({
+    await this.producerService.createChat({
       content: body.content,
       userId: body.userid,
       id: body.id,

@@ -25,6 +25,7 @@
       "es2021"
     ],
     "paths": {
+      "@common/*": ["../common/*"],
       "@producer/*": [
         "../producer/src/*"
       ]

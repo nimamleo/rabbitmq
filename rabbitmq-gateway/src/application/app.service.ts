@@ -1,26 +1,28 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import amqp, { ChannelWrapper } from 'amqp-connection-manager';
 import { ConfirmChannel } from 'amqplib';
+import { AbstractRabbitmqController } from '@common/rabbitmq/abstract-rabbitmq-controller';
 
 @Injectable()
-export class AppService implements OnModuleInit {
+export class AppService extends AbstractRabbitmqController {
   private channelWrapper: ChannelWrapper;
+
   constructor() {
-    const connection = amqp.connect(['amqp://localhost']);
-    this.channelWrapper = connection.createChannel();
+    super();
+    this.channelWrapper = amqp.connect(['amqp://localhost']).createChannel();
   }
 
-  async onModuleInit() {
-    await this.channelWrapper.addSetup(async (channel: ConfirmChannel) => {
-      await channel.assertQueue('ChatQueue', { durable: true });
-      await channel.consume('ChatQueue', async (msg) => {
-        if (msg) {
-          const content = JSON.parse(msg.content.toString());
-          channel.ack(msg);
-          console.log(content);
-        }
-      });
-    });
+  client(): ChannelWrapper {
+    return this.channelWrapper;
+  }
+
+  Logger(): Logger {
+    return new Logger();
+  }
+
+  async consume(queueName: string) {
+    const a = await this.consumeQueue(queueName);
+    console.log(a);
   }
 }

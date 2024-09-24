@@ -1,7 +1,7 @@
 {
   "name": "rabbitmq",
   "version": "0.0.1",
-  "workspaces": ["http-gateway"],
+  "workspaces": ["http-gateway" , "rabbitmq-gateway"],
   "description": "",
   "author": "",
   "private": true,
