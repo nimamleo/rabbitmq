@@ -1,13 +1,15 @@
 import amqp, { ChannelWrapper } from 'amqp-connection-manager';
 import { Logger } from '@nestjs/common';
 import { ConfirmChannel } from 'amqplib';
+import { Streams } from './streams.interface';
+import { Message } from './message.interface';
 
 export abstract class AbstractRabbitmqController {
   abstract Logger(): Logger;
 
   abstract client(): ChannelWrapper;
 
-  abstract streams: { id: number; value: any }[];
+  abstract streams(): Streams[];
 
   async assertQueue(queueName: string) {
     try {
@@ -18,7 +20,7 @@ export abstract class AbstractRabbitmqController {
     }
   }
 
-  async addToQueue(queueName: string, value: any) {
+  async addToQueue(queueName: string, value: Message) {
     try {
       await this.assertQueue(queueName);
       await this.client().sendToQueue(
@@ -39,9 +41,14 @@ export abstract class AbstractRabbitmqController {
         await c.consume(queueName, (msg) => {
           if (msg) {
             const content = JSON.parse(msg.content.toString());
+            for (const x of this.streams()) {
+              if (x.correlationId === content.correlationId) {
+                x.payload = content.vale;
+              }
+            }
             this.Logger().verbose(content);
             c.ack(msg);
-            this.streams.push(content);
+            this.streams().push(content);
             return content;
           }
         });

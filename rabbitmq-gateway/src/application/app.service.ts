@@ -3,6 +3,7 @@ import { EventPattern, Payload } from '@nestjs/microservices';
 import amqp, { ChannelWrapper } from 'amqp-connection-manager';
 import { ConfirmChannel } from 'amqplib';
 import { AbstractRabbitmqController } from '@common/rabbitmq/abstract-rabbitmq-controller';
+import { Streams } from '@common/rabbitmq/streams.interface';
 
 @Injectable()
 export class AppService extends AbstractRabbitmqController {
@@ -21,8 +22,19 @@ export class AppService extends AbstractRabbitmqController {
     return new Logger();
   }
 
-  async consume(queueName: string) {
-    const a = await this.consumeQueue(queueName);
+  streams(): Streams[] {
+    return [
+      {
+        correlationId: '123',
+        payload: (data) => this.consume(data),
+      },
+    ];
+  }
+
+  async consume(v: any) {
+    console.log(v);
+    console.log(this.streams()[0].payload());
+    const a = await this.consumeQueue('chatQueue');
     console.log(a);
   }
 }
