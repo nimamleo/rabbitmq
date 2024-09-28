@@ -1,4 +1,4 @@
 export interface Streams {
-  correlationId: string;
-  payload: any;
+  name: string;
+  payload: (data: any) => any;
 }

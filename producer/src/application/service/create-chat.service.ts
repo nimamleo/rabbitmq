@@ -3,6 +3,7 @@ import { Chat } from '../models/chat.model';
 import { AbstractRabbitmqController } from '@common/rabbitmq/abstract-rabbitmq-controller';
 import amqp, { ChannelWrapper } from 'amqp-connection-manager';
 import { Streams } from '@common/rabbitmq/streams.interface';
+import { ChatReq } from '@common/rabbitmq/models/chat.model';
 
 @Injectable()
 export class CreateChatService extends AbstractRabbitmqController {
@@ -26,7 +27,12 @@ export class CreateChatService extends AbstractRabbitmqController {
   }
 
   async createChat(data: Chat) {
-    await this.addToQueue('chatQueue', { correlationId: '123', value: data });
+    const target = new ChatReq({ content: data.content });
+
+    await this.addToQueue('chatQueue', {
+      name: target.streamKey(),
+      value: target,
+    });
     return true;
   }
 }

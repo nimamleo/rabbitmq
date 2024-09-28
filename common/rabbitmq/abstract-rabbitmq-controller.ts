@@ -2,7 +2,8 @@ import amqp, { ChannelWrapper } from 'amqp-connection-manager';
 import { Logger } from '@nestjs/common';
 import { ConfirmChannel } from 'amqplib';
 import { Streams } from './streams.interface';
-import { Message } from './message.interface';
+import { Stream } from './streamKey.interface';
+import { Message } from './models/message.model';
 
 export abstract class AbstractRabbitmqController {
   abstract Logger(): Logger;
@@ -20,7 +21,7 @@ export abstract class AbstractRabbitmqController {
     }
   }
 
-  async addToQueue(queueName: string, value: Message) {
+  async addToQueue<T>(queueName: string, value: Message<T>) {
     try {
       await this.assertQueue(queueName);
       await this.client().sendToQueue(
@@ -38,17 +39,13 @@ export abstract class AbstractRabbitmqController {
       this.Logger().verbose(`consuming ${queueName}`);
       await this.client().addSetup(async (c: ConfirmChannel) => {
         await c.assertQueue(queueName);
-        await c.consume(queueName, (msg) => {
+        await c.consume(queueName, async (msg) => {
           if (msg) {
             const content = JSON.parse(msg.content.toString());
-            for (const x of this.streams()) {
-              if (x.correlationId === content.correlationId) {
-                x.payload = content.vale;
-              }
-            }
-            this.Logger().verbose(content);
+            const target = this.streams().find((x) => x.name == content.name);
+            await target.payload(content.value);
+
             c.ack(msg);
-            this.streams().push(content);
             return content;
           }
         });

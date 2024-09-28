@@ -8,7 +8,7 @@ async function bootstrap() {
     await NestFactory.createMicroservice<MicroserviceOptions>(AppModule);
 
   const rabbit = await app.resolve<AppService>(AppService);
-  await rabbit.consume('chatQueue');
+  await rabbit.consumeQueue('chatQueue');
   await app.listen();
 }
 
