@@ -26,8 +26,11 @@
     ],
     "paths": {
       "@common/*": ["../common/*"],
-      "@producer/*": [
-        "../producer/src/*"
+      "@infrastructure/*": [
+        "../infrastructure/src/*"
+      ],
+      "@invoice/*": [
+        "../invoice/src/*"
       ]
     }
   }

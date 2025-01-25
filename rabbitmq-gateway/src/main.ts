@@ -1,14 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { AppService } from './application/app.service';
+import { MicroserviceOptions } from '@nestjs/microservices';
+import { EmailService } from './application/email.service';
+import { DailySaleReport } from '@common/streams/queue/daily-sale-report.model';
 
 async function bootstrap() {
   const app =
     await NestFactory.createMicroservice<MicroserviceOptions>(AppModule);
 
-  const rabbit = await app.resolve<AppService>(AppService);
-  await rabbit.consumeQueue('chatQueue');
+  const rabbit = await app.resolve<EmailService>(EmailService);
+  await rabbit.consumeQueue(DailySaleReport);
+
   await app.listen();
 }
 

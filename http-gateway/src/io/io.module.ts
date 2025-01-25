@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ProducerHttpController } from './producer/producer-http.controller';
-import { ProducerModule } from '@producer/application/producer.module';
+import { InvoiceHttpController } from './http/controller/invoice/invoice-http.controller';
+import { InvoiceModule } from '@invoice/application/invoice/invoice.module';
 
 @Module({
-  imports: [ProducerModule],
-  controllers: [ProducerHttpController],
+  imports: [InvoiceModule],
+  controllers: [InvoiceHttpController],
 })
 export class IoModule {}

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './application/app.service';
+import { EmailService } from './application/email.service';
 
 @Module({
-  providers: [AppService],
+  providers: [EmailService],
 })
 export class AppModule {}
