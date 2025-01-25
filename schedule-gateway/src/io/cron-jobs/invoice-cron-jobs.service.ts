@@ -10,7 +10,7 @@ import { InvoiceService } from '@invoice/application/invoice/service/invoice.ser
 export class InvoiceCronJobsService {
   private readonly logger = new Logger(InvoiceCronJobsService.name);
   constructor(
-    // @Inject(EMAIL_WRITER) private readonly emailWriter: IEmailWriter,
+    @Inject(EMAIL_WRITER) private readonly emailWriter: IEmailWriter,
     private readonly invoiceService: InvoiceService,
   ) {}
 
@@ -22,17 +22,17 @@ export class InvoiceCronJobsService {
       return;
     }
 
-    // const res = await this.emailWriter.sendInvoiceEmail({
-    //   email: 'nimamahini81@gmail.com',
-    //   list: getSummary.value.map((x) => ({
-    //     totalSale: x.totalSale,
-    //     totalQuantity: x.totalQuantitySold,
-    //     sku: x.sku,
-    //   })),
-    // });
-    // if (res.isError()) {
-    //   this.logger.error('send summary failed');
-    // }
+    const res = await this.emailWriter.sendInvoiceEmail({
+      email: 'nimamahini81@gmail.com',
+      list: getSummary.value.map((x) => ({
+        totalSale: x.totalSale,
+        totalQuantity: x.totalQuantitySold,
+        sku: x.sku,
+      })),
+    });
+    if (res.isError()) {
+      this.logger.error('send summary failed');
+    }
     this.logger.debug('summary detail added to QUEUE');
   }
 }
