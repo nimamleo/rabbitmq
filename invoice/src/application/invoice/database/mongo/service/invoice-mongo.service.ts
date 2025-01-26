@@ -11,7 +11,7 @@ import { GetInvoiceListQueryable } from '../../queryable/get-invoice-list.querya
 import { GetSummaryDto } from '../../dto/get-summary.dto';
 
 @Injectable()
-export class InvoiceDatabaseService implements IInvoiceDatabaseProvider {
+export class InvoiceMongoService implements IInvoiceDatabaseProvider {
   constructor(
     @InjectModel(Invoice.name) private readonly invoiceModel: Model<Invoice>,
   ) {}

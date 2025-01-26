@@ -1,8 +1,8 @@
 {
   "name": "schedule-gateway",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "nimamleo",
+  "author": "https://github.com/nimamleo",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -20,7 +20,7 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/microservices": "^10.4.15",
     "@nestjs/platform-express": "^10.0.0",
-    "@nestjs/schedule": "^5.0.1",
+    "@nestjs/schedule": "^4.0.2",
     "@nestjs/swagger": "^7.4.2",
     "@types/amqplib": "^0.10.6",
     "amqp-connection-manager": "^4.1.14",

@@ -7,5 +7,6 @@ export interface IInvoice {
   amount: number;
   reference: string;
   items: Partial<IItemEntity>[];
+  date: Date;
 }
-export interface IInvoiceEntity extends IInvoice, IEntity, IDated {}
+export interface IInvoiceEntity extends IInvoice, IEntity {}

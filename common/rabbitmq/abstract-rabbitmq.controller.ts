@@ -1,9 +1,9 @@
-import { Stream } from "./stream.interface";
-import { ChannelWrapper } from "amqp-connection-manager";
-import { Err, Ok, Result } from "../result";
-import { GenericStatusCodes } from "../enums/status.enum";
-import { Message } from "./message.model";
-import { ConfirmChannel } from "amqplib";
+import { Stream } from './stream.interface';
+import { ChannelWrapper } from 'amqp-connection-manager';
+import { Err, Ok, Result } from '../result';
+import { GenericStatusCodes } from '../enums/status.enum';
+import { Message } from './message.model';
+import { ConfirmChannel } from 'amqplib';
 
 export abstract class AbstractRabbitMQController {
   abstract Logger(): any;
@@ -16,9 +16,9 @@ export abstract class AbstractRabbitMQController {
     const queue = await this.client().assertQueue(queueName);
     if (!queue) {
       this.Logger().error(`can not create queue`);
-      return Err("create queue failed", GenericStatusCodes.INTERNAL);
+      return Err('create queue failed', GenericStatusCodes.INTERNAL);
     }
-    this.Logger().verbose(`queue with name ${queueName} created`);
+    this.Logger().verbose(`queue with name ${queueName} is ready`);
     return queue;
   }
 

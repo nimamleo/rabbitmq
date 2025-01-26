@@ -21,18 +21,18 @@ export class InvoiceCronJobsService {
       this.logger.error('get summary failed');
       return;
     }
-
-    const res = await this.emailWriter.sendInvoiceEmail({
-      email: 'nimamahini81@gmail.com',
-      list: getSummary.value.map((x) => ({
-        totalSale: x.totalSale,
-        totalQuantity: x.totalQuantitySold,
-        sku: x.sku,
-      })),
-    });
-    if (res.isError()) {
-      this.logger.error('send summary failed');
+    if (getSummary.value.length > 0) {
+      const res = await this.emailWriter.sendInvoiceEmail({
+        email: 'nimamahini81@gmail.com',
+        list: getSummary.value.map((x) => ({
+          totalSale: x.totalSale,
+          totalQuantity: x.totalQuantitySold,
+          sku: x.sku,
+        })),
+      });
+      if (res.isError()) {
+        this.logger.error('send summary failed');
+      }
     }
-    this.logger.debug('summary detail added to QUEUE');
   }
 }

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Invoice, InvoiceSchema } from './mongo/schema/invoice.schema';
 import { INVOICE_DATABASE_PROVIDER } from './provider/invoice-database.provider';
-import { InvoiceDatabaseService } from './mongo/service/invoice-database.service';
+import { InvoiceMongoService } from './mongo/service/invoice-mongo.service';
 import { CoreDatabaseModule } from '@infrastructure/infrastrucute/database/core-database.module';
 
 @Module({
@@ -18,7 +18,7 @@ import { CoreDatabaseModule } from '@infrastructure/infrastrucute/database/core-
   providers: [
     {
       provide: INVOICE_DATABASE_PROVIDER,
-      useClass: InvoiceDatabaseService,
+      useClass: InvoiceMongoService,
     },
   ],
   exports: [INVOICE_DATABASE_PROVIDER],
